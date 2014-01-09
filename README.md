@@ -18,26 +18,38 @@ class MyClass {
 		
 		/* Defining Terms (e.g. Method Arguments, Local Variables in Method ) ... arguments are already terms, local variables are not */
 		$contract->term('arg')->allowed($array); /* The term may be an array containing the specified fields (other fields filtered out, see data();) */
+		$contract->term('arg')->alone(); /* The term must be alone, having no siblings */
 		$contract->term('arg')->alpha(); /* The term must be an alphabetical string */
 		$contract->term('arg')->alphaNumeric(); /* The term must be an alplanumeric string */
-		$contract->term('arg')->alphaDash(); /* The term must be an alphanumeric with dash */
-		$contract->term('arg')->array(); /* The term must be an array */
+		$contract->term('arg')->alphaDash(); /* The term must be an alphanumeric allowing dashes */
+		$contract->term('arg')->alphaUnderscore(); /* The term must be an alphanumeric allowing unscores */
+		$contract->term('arg')->arraylist(); /* The term must be an array */
 		$contract->term('arg')->base64(); /* The term must be a base64 string */
 		$contract->term('arg')->boolean(); /* The term must be a boolean */
+		$contract->term('arg')->count($value); /* The term must be the count of the value (for arrays) */
 		$contract->term('arg')->decimal(); /* The term must be a decimal */
+		$contract->term('arg')->earlier(); /* The term must be earlier than the value */
 		$contract->term('arg')->integer(); /* The term must be an integer */
 		$contract->term('arg')->email(); /* The term must be an email address */
 		$contract->term('arg')->equals($value); /* The term must match the value */
 		$contract->term('arg')->greaterThan($value); /* The term must be greater than the value */
+		$contract->term('arg')->later(); /* The term must be later than the value */
 		$contract->term('arg')->id(); /* The term must be an id (a natural positive number) */
+		$contract->term('arg')->in($value); /* The term must be in the values of the array */
 		$contract->term('arg')->ip(); /* The term must be an ip address */
 		$contract->term('arg')->length($value); /* The term must be the length of the value */
 		$contract->term('arg')->lessThan($value); /* The term must be less than the value */
 		$contract->term('arg')->natural(); /* The term must be a natural number */
 		$contract->term('arg')->naturalPositive(); /* The term must be a natural positive number */
+		$contract->term('arg')->none($value); /* The term must be an empty value or values */
+		$contract->term('arg')->not($value); /* The term must not be equal to the value or values */
+		$contract->term('arg')->null(); /* The term must be null */
 		$contract->term('arg')->numeric(); /* The term must be numeric */
+		$contract->term('arg')->optional(); /* The term is not required */
+		$contract->term('arg')->phone(); /* The term must be a phone number */
 		$contract->term('arg')->required(); /* The term must be non-empty */
 		$contract->term('arg')->required($array); /* The term must be an array with the specific fields */
+		$contract->term('arg')->string(); /* The term must be a string */
 		$contract->term('arg')->url(); /* The term must be URL */
 		$contract->term('arg')->withData(); /* The term must be an array with at least one item, used for editing records  */
 		
