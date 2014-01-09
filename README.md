@@ -83,10 +83,10 @@ class Model {
 	
 		$contract = new Contract();
 		$contract->term('barId')->id()->end()
-			 ->term('includeBaz')->boolean()->end()
-			 ->term('limit')->natural()->end()
-			 ->term('offset')->natural()->end()
-			 ->metOrThrow();
+				 ->term('includeBaz')->boolean()->end()
+				 ->term('limit')->natural()->end()
+				 ->term('offset')->natural()->end()
+				 ->metOrThrow();
 			 
 		/* Continue with peace of mind ... */
 
