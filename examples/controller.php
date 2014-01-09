@@ -23,9 +23,9 @@ class User_Controller {
 				/* Get User For Login */
 				$user = $userModel->getUser($userEmail, $userPass);
 				$contract->term('user', $user)->arraylist()
-																			->element('id')->id()->end()
-																			->element('active')->equals(1)->end()
-																			->metOrThrow();
+							      ->element('id')->id()->end()
+							      ->element('active')->equals(1)->end()
+							      ->metOrThrow();
 				$loginUserId = $user['id'];
 				
 				/* Proceed Safely to Model for Storage of User Login */
