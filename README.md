@@ -61,13 +61,13 @@ class MyClass {
 		$contract->term('user', 'username123')->alphaNumeric()->length(8, 16);
 
 		/* Validation */
-		$met = $contract->term('arg')->met(); /* The contract checks all terms and returns a boolean for success or failure to meet the contract */
+		$met = $contract->term('arg')->met(); /* The contract term can check to see if it meets its rules, it does so and then returns a boolean for success or failure */
 		if (!$met) return false; /* The method returns false when the contract for the method has not been met */
-		
-		$contract->metOrThrow(); /* Equivalent to met(), however, throws an exception halting the program */
+		$met = $contract->met(); /* The contract can check all terms, calling met() on each contract term, and collecting the results */
+		$contract->metOrThrow(); /* Equivalent to met(), however, throws an exception halting the program unless caught */
 		
 		/* Post Validation, Obtaining Filtered Data */
-		$argData = $contract->term('arg')->data(); /* Returns the term's value(s) as per the contract.  If allowed() is used (see above), data() will return only the allowed value(s) from the original value(s) of the argument */
+		$argData = $contract->term('arg')->data(); /* Returns the term's value(s) as per the contract.  Indeed, the contract presents through its data() method only the data that meets the contract term rules. If allowed() is used (see above), data() will return only the allowed value(s) from the original value(s) of the argument */
 		
 	}
 	
