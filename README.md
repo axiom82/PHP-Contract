@@ -5,8 +5,10 @@ A PHP library designed to ensure the integrity of values passed to class method 
 
 
 
-Documentation of PHP-Contract Functionality (For detailed usage examples, see PHP-Contract/examples)
-===========================================
+Documentation of PHP-Contract Functionality
+-------------------------------------------
+(For detailed usage examples, see PHP-Contract/examples)
+
 
 <pre>
 
@@ -74,7 +76,7 @@ class MyClass {
 
 
 Example of Chaining Contract Terms and Contract Term Rules
-==========================================================
+----------------------------------------------------------
 
 <pre>
 class Model {
