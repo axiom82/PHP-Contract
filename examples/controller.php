@@ -39,15 +39,15 @@ class User_Controller {
 				$messages = array();
 				switch ($e->term){
 				
-					case 'userEmail':	$messages[] = 'Please enter an email address.'; break;
-					case 'userPass':	$messages[] = 'Please enter a password.'; break;
-					case 'userIp':		$messages[] = 'Please enter a valid ip address.'; break;
-					case 'dateTime':	$messages[] = 'Please enter a valid date time.'; break;
-					case 'user':		$messages[] = 'Please enter a valid user.'; break;
-					case 'userLogged':	$messages[] = 'Sorry. You could not be logged in.'; break;
-					default:		$messages[] = 'We do not get it either!'; break;
+					case 'userEmail':  $messages[] = 'Please enter an email address.'; break;
+					case 'userPass':   $messages[] = 'Please enter a password.'; break;
+					case 'userIp':     $messages[] = 'Please enter a valid ip address.'; break;
+					case 'dateTime':   $messages[] = 'Please enter a valid date time.'; break;
+					case 'user':       $messages[] = 'Please enter a valid user.'; break;
+					case 'userLogged': $messages[] = 'Sorry. You could not be logged in.'; break;
+					default:           $messages[] = 'We do not get it either!'; break;
 				
-				} 
+				}
 			
 			}
 		
