@@ -6,6 +6,7 @@ class User_Controller {
 	
 		if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		
+			/* Hypothetical Data */
 			$loginUserEmail = $_REQUEST['email'];
 			$loginUserPass = $_REQUEST['pass'];
 			$loginUserIp = $_SERVER['REMOTE_ADDR'];
