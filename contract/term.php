@@ -1,4 +1,5 @@
 <?php
+require_once('exception.php');
 
 class Contract_Term {
 	
