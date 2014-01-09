@@ -4,6 +4,7 @@ class User_Model {
 	
 	public function createUser($userId, $userData){
 		
+		/* Define Contract Requirements for Model Data */
 		$contract = new Site_Contract();
 		$contract->term('userId')->id();
 		$contract->term('userData')->arraylist()
@@ -22,10 +23,10 @@ class User_Model {
 		                           ->element('website')->optional()->url()->end()
 		                           ->element('registered')->datetime()->end()
 		                           ->element('active')->boolean()->end();
-    		$contract->metOrThrow();
+		$contract->metOrThrow();
   		
-  		/* Follow w/ Basic MySQL Query */
-  		$rows = array();
+		/* Follow w/ Basic MySQL Query */
+		$rows = array();
   	
 		/* $select = "SELECT * FROM user WHERE id = {$userId}";
 		while($row = mysql_query($select)) $rows[] = $row; */
