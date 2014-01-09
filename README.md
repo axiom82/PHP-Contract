@@ -61,13 +61,20 @@ class MyClass {
 		$contract->term('user', 'username123')->alphaNumeric()->length(8, 16);
 
 		/* Validation */
-		$met = $contract->term('arg')->met(); /* The contract term can check to see if it meets its rules, it does so and then returns a boolean for success or failure */
-		if (!$met) return false; /* The method returns false when the contract for the method has not been met */
-		$met = $contract->met(); /* The contract can check all terms, calling met() on each contract term, and collecting the results */
-		$contract->metOrThrow(); /* Equivalent to met(), however, throws an exception halting the program unless caught */
+		$met = $contract->term('arg')->met(); /* The contract term has a met() method that checks to see if the term meets its own rules, it does so and then returns a boolean for success or failure */
+		if (!$met) return false; /* The method returns false when the contract has not been met */
+		
+		$met = $contract->met(); /* The contract can check all of its child terms through its met() method, which calls each contract term's met() method, and collects the results */
+		$contract->metOrThrow(); /* Most useful I think.  Equivalent to met(), however, throws an exception halting the program unless caught */
 		
 		/* Post Validation, Obtaining Filtered Data */
 		$argData = $contract->term('arg')->data(); /* Returns the term's value(s) as per the contract.  Indeed, the contract presents through its data() method only the data that meets the contract term rules. If allowed() is used (see above), data() will return only the allowed value(s) from the original value(s) of the argument */
+		
+		/* Debugging, "What term was not met? */
+		$contract->debug();
+		
+		/* Or, return the array into your own variable */
+		$debug = $contract->debug(true);
 		
 	}
 	
