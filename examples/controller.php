@@ -43,7 +43,7 @@ class User_Controller {
 					case 'userIp':		$messages[] = 'Please enter a valid ip address.'; break;
 					case 'dateTime':	$messages[] = 'Please enter a valid date time.'; break;
 					case 'user':		$messages[] = 'Please enter a valid user.'; break;
-					case 'userLogged'	$messages[] = 'Sorry. You could not be logged in.'; break;
+					case 'userLogged':	$messages[] = 'Sorry. You could not be logged in.'; break;
 					default:		$messages[] = 'We do not get it either!'; break;
 				
 				}
