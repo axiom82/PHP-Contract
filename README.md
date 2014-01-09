@@ -71,3 +71,26 @@ class MyClass {
 	
 }
 </pre>
+
+
+Example of Chaining Contract Terms and Contract Term Rules
+==========================================================
+
+<pre>
+class Model {
+
+	public function getFoos($barId, $includeBaz = false, $limit = 0, $offset = 0){
+	
+		$contract = new Contract();
+		$contract->term('barId')->id()->end()
+			 ->term('includeBaz')->boolean()->end()
+			 ->term('limit')->natural()->end()
+			 ->term('offset')->natural()->end()
+			 ->metOrThrow();
+			 
+		/* Continue with peace of mind ... */
+
+	}
+	
+}
+</pre>
