@@ -47,7 +47,7 @@ class User_Controller {
 					case 'userLogged':	$messages[] = 'Sorry. You could not be logged in.'; break;
 					default:		$messages[] = 'We do not get it either!'; break;
 				
-				}
+				} 
 			
 			}
 		
