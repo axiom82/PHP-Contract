@@ -8,7 +8,7 @@ A PHP library designed to ensure the integrity of values passed to class method 
 Documentation of PHP-Contract Functionality (For detailed usage examples, see PHP-Contract/examples)
 ===========================================
 
-<?php
+<pre>
 
 class MyClass {
 
@@ -58,5 +58,4 @@ class MyClass {
 	}
 	
 }
-
-?>
+</pre>
