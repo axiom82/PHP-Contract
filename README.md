@@ -70,7 +70,7 @@ class MyClass {
 		/* Post Validation, Obtaining Filtered Data */
 		$argData = $contract->term('arg')->data(); /* Returns the term's value(s) as per the contract.  Indeed, the contract presents through its data() method only the data that meets the contract term rules. If allowed() is used (see above), data() will return only the allowed value(s) from the original value(s) of the argument */
 		
-		/* Debugging, "What term was not met? */
+		/* Debugging, "Which term(s) did not meet the contract? */
 		$contract->debug();
 		
 		/* Or, return the array into your own variable */
