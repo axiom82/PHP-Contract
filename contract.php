@@ -1,6 +1,6 @@
 <?php
-require_once('./contract/term.php');
-require_once('./contract/exception.php');
+require_once('contract/term.php');
+require_once('contract/exception.php');
 
 class Contract {
 	

@@ -1,11 +1,11 @@
-<?php
+<?php require_once('../contract.php');
 
 class User_Model {
 	
 	public function createUser($userId, $userData){
 		
 		/* Define Contract Requirements for Model Data */
-		$contract = new Site_Contract();
+		$contract = new Contract();
 		$contract->term('userId')->id();
 		$contract->term('userData')->arraylist()
 		                           ->element('type')->in(array('member','administrator'))->end()
@@ -34,5 +34,7 @@ class User_Model {
 		return $rows;
   
 	}
+	
+}
 	
 ?>
