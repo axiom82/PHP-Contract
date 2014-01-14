@@ -4,6 +4,28 @@ PHP-Contract
 A PHP library designed to ensure the integrity of values passed to class method parameters. 
 
 
+Example of Chaining Contract Terms and Contract Term Rules
+----------------------------------------------------------
+
+<pre>
+class Model {
+
+	public function getFoos($barId, $includeBaz = false, $limit = 0, $offset = 0){
+	
+		$contract = new Contract();
+		$contract->term('barId')->id()->end()
+				 ->term('includeBaz')->boolean()->end()
+				 ->term('limit')->natural()->end()
+				 ->term('offset')->natural()->end()
+				 ->metOrThrow();
+			 
+		/* Continue with peace of mind ... */
+
+	}
+	
+}
+</pre>
+
 
 Documentation of PHP-Contract Functionality
 -------------------------------------------
@@ -76,29 +98,6 @@ class MyClass {
 		/* Or, return the array into your own variable */
 		$debug = $contract->debug(true);
 		
-	}
-	
-}
-</pre>
-
-
-Example of Chaining Contract Terms and Contract Term Rules
-----------------------------------------------------------
-
-<pre>
-class Model {
-
-	public function getFoos($barId, $includeBaz = false, $limit = 0, $offset = 0){
-	
-		$contract = new Contract();
-		$contract->term('barId')->id()->end()
-				 ->term('includeBaz')->boolean()->end()
-				 ->term('limit')->natural()->end()
-				 ->term('offset')->natural()->end()
-				 ->metOrThrow();
-			 
-		/* Continue with peace of mind ... */
-
 	}
 	
 }
