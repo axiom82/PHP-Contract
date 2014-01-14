@@ -45,6 +45,8 @@ class Contract_Term {
 	protected $meetPhone = false;
 	protected $meetRequired = false;
 	protected $meetString = false;
+	protected $meetTime = false;
+	protected $meetType = false;
 	protected $meetUrl = false;
 	protected $meetWithData = false;
 	
