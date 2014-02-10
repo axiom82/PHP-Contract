@@ -29,9 +29,9 @@ class User_Filter {
 		
 		/* Users data must be an array of elements, each element an array itself, with an options array that has two or more elements. */
 		$contract->term('usersData')->elements()
-									->arraylist()
-										->allowed('*')
-										->element('options')->arraylist()->count(2, '*');
+						->arraylist()
+						->allowed('*')
+						->element('options')->arraylist()->count(2, '*');
 		
 		$filteredData = $contract->term('usersData')->data();
 		
@@ -50,9 +50,9 @@ class User_Filter {
 		/* Users data must be an array of elements, each element an array itself, with a state element equaling $state.
 		   Allowed fields to be returned are name, address, city, state, and zip. */
 		$contract->term('usersData')->elements()
-									->arraylist()
-										->allowed(array('name', 'address', 'city', 'state', 'zip'))
-										->element('state')->equals($state)->end();
+						->arraylist()
+							->allowed(array('name', 'address', 'city', 'state', 'zip'))
+							->element('state')->equals($state)->end();
 		
 		$filteredData = $contract->term('usersData')->data();
 		
@@ -70,11 +70,11 @@ class User_Filter {
 		/* Users data must be an array of elements, each element an array itself, with an id, name, registered date, and active boolean true.
 		   Allowed fields to be returned are the defined elements: id, name, registered, active. */
 		$contract->term('usersData')->elements()
-									->arraylist()
-										->element('id')->id()->end()
-										->element('name')->optional()->alpha()->end()
-										->element('registered')->datetime()->end()
-										->element('active')->boolean()->equals(true)->end();
+						->arraylist()
+							->element('id')->id()->end()
+							->element('name')->optional()->alpha()->end()
+							->element('registered')->datetime()->end()
+							->element('active')->boolean()->equals(true)->end();
 		
 		$filteredData = $contract->term('usersData')->data();
 		
@@ -155,12 +155,12 @@ class User_Filter {
 				'state'			=> 'CT',
 				'zip'			=> '34678',
 				'options'		=> array(
-						'remember'			=> true,
-						'duration_length'	=> 2,
-						'duration_unit'		=> 'week'
+					'remember'		=> true,
+					'duration_length'	=> 2,
+					'duration_unit'		=> 'week'
 				),
 				'logged'		=> '2014-02-06 12:00:00',
-				'registered'	=> '2012-01-01 12:00:00',
+				'registered'		=> '2012-01-01 12:00:00',
 				'active'		=> true
 			),
 			array(
@@ -171,10 +171,10 @@ class User_Filter {
 				'state'			=> 'MA',
 				'zip'			=> '01243',
 				'options'		=> array(
-						'remember'	=> false
+					'remember'		=> false
 				),
 				'logged'		=> '2014-03-01 12:00:00',
-				'registered'	=> '2012-07-01 12:00:00',
+				'registered'		=> '2012-07-01 12:00:00',
 				'active'		=> true
 			),
 			array(
@@ -185,10 +185,10 @@ class User_Filter {
 				'state'			=> 'RI',
 				'zip'			=> '03654',
 				'options'		=> array(
-						'remember'	=> null
+					'remember'		=> null
 				),
 				'logged'		=> null,
-				'registered'	=> '2012-05-01 12:00:00',
+				'registered'		=> '2012-05-01 12:00:00',
 				'active'		=> false
 			)
 		);
