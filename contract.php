@@ -1,6 +1,5 @@
 <?php
-require_once('contract/term.php');
-require_once('contract/exception.php');
+require_once('Contract/Term.php');
 
 class Contract {
 	
@@ -29,42 +28,68 @@ class Contract {
 		
 	}
 	
-	public function debug($return = false){
+	public function debug($print = true){
 		
 		$debug = array();
 		
 		foreach ($this->terms as $term){
 			
 			$termName = $term->getName();
-			$debug[$termName] = $term->debug(true);
+			$debug[$termName] = $term->debug(false);
 		
 		}
 		
-		if ($return) return $debug;
-		else print_r($debug);
+		if ($print) print_r($debug);
+		
+		return $debug;
+		
+	}
+	
+	public function getMets(){
+		
+		$mets = array();
+		
+		foreach ($this->terms as $term){
+			
+			$termMets = $term->getMets();
+			$mets = array_merge($mets, $termMets);
+			
+		}
+		
+		return $mets;
 		
 	}
 	
 	public function met(){
 		
-		$met = true;
+		$mets = $this->getMets();
 		
-		foreach ($this->terms as $term){
-			
-			$met = $term->met();
-			if ($met == false) break;
+		foreach ($mets as $met) if ($met['met'] !== true){
+				
+			if ($met['predicate'] != 'Allowed') return false;
 			
 		}
 		
-		return $met;
+		return true;
 		
 	}
 	
 	public function metOrThrow(){
 		
-		$met = $this->met();
-		if ($met == false) throw new Contract_Exception('Contract terms did not meet their requirements in ' . $this->reflection['class']->getName() . '::' . $this->reflection['method']->getName() . '.', 'contract');
-		return $met;
+		$mets = $this->getMets();
+		
+		foreach ($mets as $met) if ($met['met'] !== true){
+				
+			if ($met['predicate'] != 'Allowed'){
+				
+				require_once('Contract/Exception.php');
+				throw new Contract_Exception('Contract term `' . $met['term'] . '` did not meet its requirements.', $met['name']);
+			
+			}
+			
+		}
+		
+		return true;
 		
 	}
 	
@@ -76,6 +101,14 @@ class Contract {
 		else $term = $this->terms[$key] = new Contract_Term($key, $data, $this);
 		
 		return $term;
+		
+	}
+	
+	public function __toString(){
+		
+		$string = '[contract:' . $this->reflection['class']->name . '/' . $this->reflection['method']->name . "]\n";
+		foreach ($this->terms as $term) $string .= $term;
+		return $string;
 		
 	}
 	

@@ -1,4 +1,4 @@
-<?php require_once('../contract.php');
+<?php require_once('../Contract.php');
 
 class User_Controller {
 	
