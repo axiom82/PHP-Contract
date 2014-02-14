@@ -8,4 +8,4 @@ Beyond advanced checking, this one-of-a-kind library filters data at a granular 
 
 While PHP-Contract is designed to ensure the integrity of values passed to class method parameters, it is also useful in MVC architectures to regulate controller actions and verify access to model methods.  Forget about type hinting and get into these contracts!
 
-Download it here: https://github.com/axiom82/PHP-Contract
+Download it here: https://github.com/axiom82/PHP-Contract 
