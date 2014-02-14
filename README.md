@@ -78,7 +78,7 @@ class MyClass {
 		$contract->term('arg')->required($array); /* The term must be an array with the specific fields */
 		$contract->term('arg')->string(); /* The term must be a string */
 		$contract->term('arg')->url(); /* The term must be URL */
-		$contract->term('arg')->withData(); /* The term must be an array with at least one item, used for editing records  */
+		$contract->term('arg')->withData(); /* The term, after the contract filters out invalid data, must have one or more valid values */
 		
 		/* Defining Terms for Local Variables in Method */
 		$contract->term('id', 1)->id();
