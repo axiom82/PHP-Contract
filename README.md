@@ -90,7 +90,7 @@ class MyClass {
 							 the term met its own rules, it does so and then returns a 
 							 boolean for success or failure */
 							 
-		if (!$met) return false; /	You may choose to return false when the term has not been met */
+		if (!$met) return false; /*	You may choose to return false when the term has not been met */
 		
 		$met = $contract->met(); /*	The contract checks all of its child terms through its met() method,
 						which calls each contract term's met() method,
