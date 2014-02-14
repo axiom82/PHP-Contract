@@ -55,14 +55,14 @@ class MyClass {
 		$contract->term('arg')->count($value); /* The term must be the count of the value (for arrays) */
 		$contract->term('arg')->decimal(); /* The term must be a decimal */
 		$contract->term('arg')->earlier(); /* The term must be earlier than the value */
-		$contract->term('arg')->integer(); /* The term must be an integer */
 		$contract->term('arg')->email(); /* The term must be an email address */
 		$contract->term('arg')->equals($value); /* The term must match the value */
 		$contract->term('arg')->greaterThan($value); /* The term must be greater than the value */
-		$contract->term('arg')->later(); /* The term must be later than the value */
 		$contract->term('arg')->id(); /* The term must be an id (a natural positive number) */
 		$contract->term('arg')->in($value); /* The term must be in the values of the array */
+		$contract->term('arg')->integer(); /* The term must be an integer */
 		$contract->term('arg')->ip(); /* The term must be an ip address */
+		$contract->term('arg')->later(); /* The term must be later than the value */
 		$contract->term('arg')->length($value); /* The term must be the length of the value */
 		$contract->term('arg')->lessThan($value); /* The term must be less than the value */
 		$contract->term('arg')->many(); /* The term must be an array with more than one element */
