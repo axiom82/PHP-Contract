@@ -98,7 +98,8 @@ class MyClass {
 		                            which calls each contract term's met() method,
 		                            and collects the results */
 		$contract->metOrThrow(); /* Most useful I think.  Equivalent to met(), however, throws an exception
-		                            halting the program unless caught */
+		                            halting the program unless caught. Terms also have their own individual
+		                            metOrThrow() method, in case you want to test line by line per term. */
 		
 		/* Post Validation, Obtaining Filtered Data */
 		$argData = $contract->term('arg')->data(); /* Returns the term's value(s) as per the contract.
@@ -110,7 +111,7 @@ class MyClass {
 							      
 		$argData = $contract->data('arg'); /* This is equivalent in functionality to the line above, however,
 		                                      this method is cleaner in appearance.  The contract proxies to
-		                                      the term andgets the data via the term's data() method. */
+		                                      the term and gets the data via the term's data() method. */
 
 		/* Debugging: "Which term(s) did not meet the contract?" */
 		$contract->debug();
