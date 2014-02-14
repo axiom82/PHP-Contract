@@ -10,8 +10,8 @@ sleek integration within your existing code, and the power of the code can make 
 of your checks.
 
 Beyond advanced checking, this one-of-a-kind library filters data at a granular level, and includes support for advanced
-filtering of data in multi-dimensional arrays.  Have you ever had a large array and you wanted to return only a portion
-of the data?  Maybe you have had to scan deeply into a multi-dimensional array to find a piece of information?  And
+filtering of data in multi-dimensional arrays.  For example, Have you ever had a large array and you wanted to return
+only a portion of the data?  Maybe you have had to scan deeply into a multi-dimensional array to find information?  And
 sometimes even the cleanest approach will require too many lines of code and iterations through loops; when this happens,
 the elegance of the code disappears.  With PHP-Contract, the answer is simple: define your terms and get only the data
 you want instantly, and elegantly, without reinventing the wheel.
