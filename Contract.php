@@ -27,6 +27,12 @@ class Contract {
 		}
 		
 	}
+		
+	public function data($term){
+		
+		return $this->term($term)->data();
+		
+	}
 	
 	public function debug($print = true){
 		

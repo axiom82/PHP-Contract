@@ -63,12 +63,15 @@ class MyClass {
 		$contract->term('arg')->ip(); /* The term must be an ip address */
 		$contract->term('arg')->length($value); /* The term must be the length of the value */
 		$contract->term('arg')->lessThan($value); /* The term must be less than the value */
+		$contract->term('arg')->many(); /* The term must be an array with more than one element */
 		$contract->term('arg')->natural(); /* The term must be a natural number */
 		$contract->term('arg')->naturalPositive(); /* The term must be a natural positive number */
 		$contract->term('arg')->none($value); /* The term must be an empty value or values */
 		$contract->term('arg')->not($value); /* The term must not be equal to the value or values */
 		$contract->term('arg')->null(); /* The term must be null */
 		$contract->term('arg')->numeric(); /* The term must be numeric */
+		$contract->term('arg')->object($value); /* The term must be an object that is an instance of the value */
+		$contract->term('arg')->one(); /* The term must be an array with one and only one element */
 		$contract->term('arg')->optional(); /* The term is not required */
 		$contract->term('arg')->phone(); /* The term must be a phone number */
 		$contract->term('arg')->required(); /* The term must be non-empty */
@@ -91,12 +94,16 @@ class MyClass {
 		
 		/* Post Validation, Obtaining Filtered Data */
 		$argData = $contract->term('arg')->data(); /* Returns the term's value(s) as per the contract.  Indeed, the contract presents through its data() method only the data that meets the contract term rules. If allowed() is used (see above), data() will return only the allowed value(s) from the original value(s) of the argument */
-		
+		$argData = $contract->data('arg'); /* This is equivalent in functionality to the line above, however, this method is cleaner in appearance.  The contract proxies to the term and gets the data via the term's data() method. */
+
 		/* Debugging, "Which term(s) did not meet the contract? */
 		$contract->debug();
 		
 		/* Or, return the array into your own variable */
 		$debug = $contract->debug(true);
+		
+		/* What is the full definition of my contract */
+		echo $contract; /* Prints a clean and readable text describing the contract and its terms */
 		
 	}
 	

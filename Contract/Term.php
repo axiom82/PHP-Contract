@@ -42,12 +42,14 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected $meetLater = false;
 	protected $meetLength = false;
 	protected $meetLessThan = false;
+	protected $meetMany = false;
 	protected $meetNatural = false;
 	protected $meetNaturalPositive = false;
 	protected $meetNone = false;
 	protected $meetNot = false;
 	protected $meetNull = false;
 	protected $meetNumeric = false;
+	protected $meetOne = false;
 	protected $meetOptional = false;
 	protected $meetPhone = false;
 	protected $meetRequired = false;
@@ -91,6 +93,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	public function later($timestamp = null){ $this->meetLater = (!is_null($timestamp)) ? strtotime($timestamp) : time(); return $this; }
 	public function length($value = null, $value2 = null){ $this->meetLength = (!is_null($value) || !is_null($value2)) ? array($value, $value2) : false; return $this; }
 	public function lessThan($value){ $this->meetLessThan = $value; return $this; }
+	public function many(){ $this->meetMany = true; return $this; }
 	public function natural(){ $this->meetNatural = true; return $this; }
 	public function naturalPositive(){ $this->meetNaturalPositive = true; return $this; }
 	public function none(){ $this->meetNone = true; return $this; }
@@ -98,6 +101,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	public function null(){ $this->meetNull = true; return $this; }
 	public function numeric(){ $this->meetNumeric = true; return $this; }
 	public function object($type = null){ $this->meetObject = (!is_null($type)) ? $type : true; return $this; }
+	public function one(){ $this->meetOne = true; return $this; }
 	public function optional($optional = true){ $this->meetOptional = $optional; return $this; }
 	public function phone($strict = false){ $this->meetPhone = ($strict) ? 'strict' : 'loose'; return $this; }
 	public function required($required = true){ $this->meetRequired = $required; return $this; }
@@ -306,6 +310,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected function metLater(){ return $this->scanAll('Later'); }
 	protected function metLength(){ return $this->scanAll('Length'); }
 	protected function metLessThan(){ return $this->scanAll('LessThan'); }
+	protected function metMany(){ return $this->scanOne('Many'); }
 	protected function metNatural(){ return $this->scanAll('Natural'); }
 	protected function metNaturalPositive(){ return $this->scanAll('NaturalPositive'); }
 	protected function metNone(){ return $this->scanOne('None'); }
@@ -313,6 +318,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected function metNull(){ return $this->scanAll('Null'); }
 	protected function metNumeric(){ return $this->scanAll('Numeric'); }
 	protected function metObject(){ return $this->scanAll('Object'); }
+	protected function metOne(){ return $this->scanOne('One'); }
 	protected function metOptional(){ return $this->scanOne('Optional'); }
 	protected function metPhone(){ return $this->scanAll('Phone'); }
 	protected function metRequired(){ return $this->scanOne('Required'); }
@@ -347,6 +353,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected function predicateLater($value){ return strtotime($value) > $this->meetLater; }
 	protected function predicateLength($value){ $length = strlen($value); if (!is_null($this->meetLength[0]) && !is_null($this->meetLength[1])){ if ($this->meetLength[0] !== false && $this->meetLength[1] !== false) return ($length >= $this->meetLength[0] && $length <= $this->meetLength[1]); if ($this->meetLength[0] !== false) return $length >= $this->meetLength[0]; return $length <= $this->meetLength[1]; } else if (!is_null($this->meetLength[0])) return $length == $this->meetLength[0]; return false; }
 	protected function predicateLessThan($value){ return $value < $this->meetLessThan; }
+	protected function predicateMany($value){ return count($value) > 1; }
 	protected function predicateNatural($value){ return (bool) preg_match('/^[0-9]+$/', $value); }
 	protected function predicateNaturalPositive($value){ return (bool) preg_match('/^[0-9]+$/', $value) && $value > 0; }
 	protected function predicateNone($value){ return empty($this->data); }
@@ -354,6 +361,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected function predicateNull($value){ return is_null($value); }
 	protected function predicateNumeric($value){ return is_numeric($value); }
 	protected function predicateObject($value){ return ($this->meetObject === true) ? is_object($value) : is_object($value) && $value instanceof $this->meetObject; }
+	protected function predicateOne($value){ return count($value) == 1; }
 	protected function predicateOptional($value){ return true; }
 	protected function predicatePhone($value){ if ($this->meetPhone == 'strict') return (bool) preg_match('/^\([0-9]{3}\)\s?[0-9]{3}-[0-9]{4}$/', $value); else return (strlen(preg_replace('/[^0-9]/', '', $value)) >= 10); }
 	protected function predicateRequired($value){ if (is_array($this->data)){ if (is_array($this->meetRequired)) foreach ($this->meetRequired as $required) if (empty($this->data[$required])) return false; return !empty($this->data); } return (trim($this->data) != ''); }
