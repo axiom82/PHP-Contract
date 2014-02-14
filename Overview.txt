@@ -1,11 +1,24 @@
 Created in 2014, PHP-Contract is the answer to the lack of type hinting capabilities in object-oriented PHP.
 
-The new library is simple to use and has powerful results, including verifying the types of arguments being passed through class methods.  The list of supported types is grand, and includes checks for scalar types, object, and various common data formats, such as multi-dimensional arrays and single values such as ids, datetime, email, and phone strings.
+The new library is simple to use and has powerful results, including verifying the types of arguments being passed
+through class methods.  The list of supported types is grand, and includes checks for scalar types, object, and various
+common data formats, such as multi-dimensional arrays and single values such as ids, datetime, email, and phone strings.
 
-PHP-Contract is a formal introduction to forming agreements between your application and its class methods, in order to ensure the proper flow and function inside of each individual scope.  The class offers method chaining for a simple and sleek integration within your existing code, and the power of the code can make a big impact on the size and stability of your checks.
+PHP-Contract is a formal introduction to forming agreements between your application and its class methods, in order to
+ensure the proper flow and function inside of each individual scope.  The class offers method chaining for a simple and
+sleek integration within your existing code, and the power of the code can make a big impact on the size and stability
+of your checks.
 
-Beyond advanced checking, this one-of-a-kind library filters data at a granular level, and includes support for advanced filtering of data in multi-dimensional arrays.  Have you ever had a large array and you wanted to return only a portion of the data?  Maybe you have had to scan deeply into a multi-dimensional array to find a piece of information?  And sometimes even the cleanest approach will require too many lines of code and iterations through loops; when this happens, the elegance of the code disappears.  With PHP-Contract, the answer is simple: define your terms and get only the data you want instantly, and elegantly, without reinventing the wheel.
+Beyond advanced checking, this one-of-a-kind library filters data at a granular level, and includes support for advanced
+filtering of data in multi-dimensional arrays.  Have you ever had a large array and you wanted to return only a portion
+of the data?  Maybe you have had to scan deeply into a multi-dimensional array to find a piece of information?  And
+sometimes even the cleanest approach will require too many lines of code and iterations through loops; when this happens,
+the elegance of the code disappears.  With PHP-Contract, the answer is simple: define your terms and get only the data
+you want instantly, and elegantly, without reinventing the wheel.
 
-While PHP-Contract is designed to ensure the integrity of values passed to class method parameters, it is also useful in MVC architectures to regulate controller actions and verify access to model methods.  Forget about type hinting and get into these contracts!
+While PHP-Contract is designed to ensure the integrity of values passed to class method parameters, it is also useful in
+MVC architectures to regulate controller actions and verify access to model methods.
+
+Forget about type hinting and get into these contracts!
 
 Download it here: https://github.com/axiom82/PHP-Contract 
