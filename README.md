@@ -40,7 +40,9 @@ class MyClass {
 
 		$contract = new Contract();
 		
-		/* Defining Terms (e.g. Method Arguments, Local Variables in Method ) ... arguments are already terms, local variables are not */
+		/* Defining Terms For Method Arguments and Local Variables in Method Scope ...
+		   Note: arguments are already created as terms for you, local variables must be created manually (see below) */
+		
 		$contract->term('arg')->allowed($array); /* The term may be an array containing the specified fields (other fields filtered out, see data();) */
 		$contract->term('arg')->alone(); /* The term must be alone, having no siblings */
 		$contract->term('arg')->alpha(); /* The term must be an alphabetical string */
@@ -78,37 +80,37 @@ class MyClass {
 		$contract->term('arg')->required($array); /* The term must be an array with the specific fields */
 		$contract->term('arg')->string(); /* The term must be a string */
 		$contract->term('arg')->url(); /* The term must be URL */
-		$contract->term('arg')->withData(); /* The term, after the contract filters out invalid data, must have one or more valid values */
+		$contract->term('arg')->withData(); /* The term, after the contract filters out invalid data,
+		                                       must have one or more valid values */
 		
-		/* Defining Terms for Local Variables in Method */
-		$contract->term('id', 1)->id();
-		$contract->term('email', 'test@mail.com')->email();
-		$contract->term('user', 'username123')->alphaNumeric()->length(8, 16);
+		/* Defining Terms for Local Variables in Method Scope */
+		$contract->term('id', $idVar)->id();
+		$contract->term('email', $emailVar)->email();
+		$contract->term('password', $passVar)->alphaNumeric()->length(8, 16);
 
 		/* Validation */
 		$met = $contract->term('arg')->met(); /* The contract term has a met() method that checks to see if
-							 the term met its own rules, it does so and then returns a 
-							 boolean for success or failure */
-							 
-		if (!$met) return false; /*	You may choose to return false when the term has not been met */
+		                                         the term met its own rules, it does so and then returns a 
+		                                         boolean for success or failure */
+		if (!$met) return false; /* You may choose to return false when the term has not been met */
 		
-		$met = $contract->met(); /*	The contract checks all of its child terms through its met() method,
-						which calls each contract term's met() method,
-						and collects the results */
-		$contract->metOrThrow(); /*	Most useful I think.  Equivalent to met(), however, throws an exception
-						halting the program unless caught */
+		$met = $contract->met(); /* The contract checks all of its child terms through its met() method,
+		                            which calls each contract term's met() method,
+		                            and collects the results */
+		$contract->metOrThrow(); /* Most useful I think.  Equivalent to met(), however, throws an exception
+		                            halting the program unless caught */
 		
 		/* Post Validation, Obtaining Filtered Data */
-		$argData = $contract->term('arg')->data(); /*	Returns the term's value(s) as per the contract.
-								Indeed, the contract presents through its data() method
-								only the data that meets the contract term rules. If
-								allowed() is used (see above), data() will return the
-								allowed value(s) from the original value(s) in the
-								argument */
+		$argData = $contract->term('arg')->data(); /* Returns the term's value(s) as per the contract.
+		                                              Indeed, the contract presents through its data() method
+		                                              only the data that meets the contract term rules. If
+		                                              allowed() is used (see above), data() will return the
+		                                              allowed value(s) from the original value(s) in the
+		                                              argument */
 							      
-		$argData = $contract->data('arg'); /	This is equivalent in functionality to the line above, however,
-							this method is cleaner in appearance.  The contract proxies to
-							the term andgets the data via the term's data() method. */
+		$argData = $contract->data('arg'); /* This is equivalent in functionality to the line above, however,
+		                                      this method is cleaner in appearance.  The contract proxies to
+		                                      the term andgets the data via the term's data() method. */
 
 		/* Debugging: "Which term(s) did not meet the contract?" */
 		$contract->debug();
