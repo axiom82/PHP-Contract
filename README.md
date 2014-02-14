@@ -96,13 +96,13 @@ class MyClass {
 		$argData = $contract->term('arg')->data(); /* Returns the term's value(s) as per the contract.  Indeed, the contract presents through its data() method only the data that meets the contract term rules. If allowed() is used (see above), data() will return only the allowed value(s) from the original value(s) of the argument */
 		$argData = $contract->data('arg'); /* This is equivalent in functionality to the line above, however, this method is cleaner in appearance.  The contract proxies to the term and gets the data via the term's data() method. */
 
-		/* Debugging, "Which term(s) did not meet the contract? */
+		/* Debugging: "Which term(s) did not meet the contract?" */
 		$contract->debug();
 		
 		/* Or, return the array into your own variable */
 		$debug = $contract->debug(true);
 		
-		/* What is the full definition of my contract */
+		/* Print and review the full definition of the contract */
 		echo $contract; /* Prints a clean and readable text describing the contract and its terms */
 		
 	}
