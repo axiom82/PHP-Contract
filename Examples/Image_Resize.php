@@ -27,8 +27,7 @@ class Image {
 			
 			/* The versatility in checking multi-dimensional arrays is profoundly intuitive! */
 			$contract =  new Site_Contract();
-			$contract->term('fileId')->id();
-			$contract->term('fileData')->arraylist()
+			$contract->term('fileData', $fileData)->arraylist()
 						   ->element('options')->arraylist()
 			   					       ->element('style')->arraylist()
 						   					 ->element('top')->natural()->end()
