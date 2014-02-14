@@ -29,16 +29,16 @@ class Image {
 			$contract =  new Site_Contract();
 			$contract->term('fileId')->id();
 			$contract->term('fileData')->arraylist()
-									   ->element('options')->arraylist()
-									   					   ->element('style')->arraylist()
-														   					 ->element('top')->natural()->end()
-																			 ->element('left')->natural()->end()
-																			 ->end()
-														   ->element('thumb')->arraylist()
-																			 ->element('style')->arraylist()
-																			  				   ->element('top')->natural()->end()
-																							   ->element('left')->natural()->end()
-																							   ->end();
+						   ->element('options')->arraylist()
+			   					       ->element('style')->arraylist()
+						   					 ->element('top')->natural()->end()
+											 ->element('left')->natural()->end()
+											 ->end()
+								       ->element('thumb')->arraylist()
+											 ->element('style')->arraylist()
+						  							   ->element('top')->natural()->end()
+													   ->element('left')->natural()->end()
+													   ->end();
 			$contract->metOrThrow();
 
 		
