@@ -27,8 +27,8 @@ class Find {
 
 		$contract = new Contract();
 		$contract->term('data/outer/inner')->arraylist()
-										   ->element('number')->integer()->end()
-										   ->element('letter')->alpha()->end();
+						   ->element('number')->integer()->end()
+						   ->element('letter')->alpha()->end();
 		$contract->metOrThrow();
 		
 	}	
@@ -38,12 +38,12 @@ class Find {
 
 		$contract = new Contract();
 		$contract->term('data')->arraylist()
-							   ->element('outer')->arraylist()
-							   					 ->element('inner')->arraylist()
-																   ->element('number')->integer()->parent()
-																   ->element('letter')->alpha()->parent('outer')	/* Direct access to 'outer' element */
-							   					 ->element('inner2')->arraylist()
-												 					->element('email')->email()->parent(TRUE) 		/* Direct access to the contract super object */	
+				       ->element('outer')->arraylist()
+							 ->element('inner')->arraylist()
+									   ->element('number')->integer()->parent()
+									   ->element('letter')->alpha()->parent('outer')	/* Direct access to 'outer' element */
+							 ->element('inner2')->arraylist()
+									    ->element('email')->email()->parent(TRUE) 		/* Direct access to the contract super object */	
 				 ->metOrThrow();
 
 	}
