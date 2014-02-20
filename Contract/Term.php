@@ -68,7 +68,7 @@ class Contract_Term extends Contract_Term_Abstract {
 		
 	}
 	
-	public function allowed($keys){ if ($keys == '*'){ foreach ($this->children as $key => $term){ $this->dataAllowable[] = $key; $term->allowed('*'); } } else { if (is_array($keys)) $this->dataAllowable = $keys; else $this->dataAllowable[] = $keys; } return $this; }
+	public function allowed($keys, $propagate = false){ if ($keys == '*'){ foreach ($this->children as $key => $term){ $this->dataAllowable[] = $key; if ($propagate) $term->allowed('*', $propagate); } } else { if (is_array($keys)) $this->dataAllowable = $keys; else $this->dataAllowable[] = $keys; } return $this; }
 	public function alone(array $exceptions = null){ $this->meetAlone = (!is_null($exceptions)) ? $exceptions : true; return $this; }
 	public function alpha(){ $this->meetAlpha = true; return $this; }
 	public function alphaNumeric(){ $this->meetAlphaNumeric = true; return $this; }
@@ -131,14 +131,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	
 	public function element($name){
 		
-		$term = null;
-
-		if (isset($this->children[$name])) $term = $this->children[$name];
-		else $term = $this->children[$name] = new Contract_Term($name, $data, $this);
-		
-		if (!in_array($name, $this->dataAllowable)) $this->dataAllowable[] = $name;
-
-		return $term;
+		return $this->getTerm($name);
 		
 	}
 	
@@ -149,11 +142,33 @@ class Contract_Term extends Contract_Term_Abstract {
 		
 	}
 	
-	public function end(){
+	public function end($recursion = false){
 		
-		return $this->parent;
+		return $this->parent();
 		
 	}
+	
+	public function find($termName){
+		
+		$terms = explode('/', $termName);
+		$current = $this;
+		
+		foreach ($terms as $term){
+			
+			$term = $current->getTerm($term, false);
+			if ($term instanceof Contract_Term_Abstract) $current = $term;
+			else {
+			
+				require_once('Exception.php');	
+				throw new Contract_Exception('Could not find: ' . $termName);
+				
+			}
+			
+		}
+		
+		return $current;
+		
+	}	
 	
 	public function getData($type = null){
 		
@@ -248,12 +263,35 @@ class Contract_Term extends Contract_Term_Abstract {
 		return $this->name;
 		
 	}
+		
+	protected function getParent($recursion = false){
+	
+		if ($recursion && $this->parent instanceof Contract_Term){
+			
+			if (is_string($recursion) && $recursion == $this->parent->getName()) return $this->parent;
+			if (is_int($recursion)) $recursion--;
+			$parent = $this->parent->getParent($recursion);
+			
+		}
+		else $parent = $this->parent;
+		
+		return $parent;
+	
+	}
 	
 	protected function getPredicateFullName($predicateName){
 		
 		$fullName = $this->getFullName();
 		$predicateFullName = $fullName . '/' . $predicateName;
 		return $predicateFullName;
+		
+	}
+		
+	public function getTerm($name, $find = true){
+		
+		if ($find) $term = $this->find($name);
+		else $term = $this->children[$name];
+		return $term;
 		
 	}
 	
@@ -273,15 +311,20 @@ class Contract_Term extends Contract_Term_Abstract {
 	
 	public function metOrThrow(){
 		
-		$met = $this->met();
-		if ($met == false){
-			
-			require_once('Exception.php');
-			throw new Contract_Exception('Contract term `' . $this->getFullName() . '` did not meet its requirements.', $this->getName());
+		$mets = $this->getMets();
 		
+		foreach ($mets as $met) if ($met['met'] !== true){
+				
+			if ($met['predicate'] != 'Allowed'){
+			
+				require_once('Exception.php');
+				throw new Contract_Exception('Contract term `' . $met['term'] . '` did not meet its requirement for ' . $met['predicate'] . '.', $met['name']);	
+				
+			}
+			
 		}
 		
-		return $met;
+		return true;
 		
 	}
 	
@@ -328,6 +371,12 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected function metUrl(){ return $this->scanAll('Url'); }
 	protected function metWithData(){ return $this->scanOne('WithData'); }
 	
+	public function parent($recursion = false){
+		
+		return $this->getParent($recursion);
+		
+	}
+	
 	protected function predicateAllowed($value, $key){ if (is_null($this->parent) || !($this->parent instanceof self)) return false; return in_array($this->getName(), $this->parent->data(self::DATA_ALLOWABLE)); }
 	protected function predicateAlone($value){ if (is_null($this->parent) || !($this->parent instanceof self)) return true; $parentData = $this->parent->getData(self::DATA_ORIGINAL); if (!is_array($parentData)) return true; if ($this->meetAlone === true) return (count($parentData) == 1 && array_key_exists($this->getName(), $parentData)); $parentDataAlone = array_diff_key($parentData, array_flip($this->meetAlone)); return (count($parentDataAlone) == 1 && array_key_exists($this->getName(), $parentDataAlone)); }
 	protected function predicateAlpha($value){ return (bool) preg_match('/[a-zA-Z]+/', $value); }
@@ -340,16 +389,16 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected function predicateCount($value){ $count = count($value); if (!is_null($this->meetCount[0]) && !is_null($this->meetCount[1])){ if (is_numeric($this->meetCount[0]) && is_numeric($this->meetCount[1])) return ($count >= $this->meetCount[0] && $count <= $this->meetCount[1]); if (is_numeric($this->meetCount[0])) return $count >= $this->meetCount[0]; else return $count <= $this->meetCount[1]; } else if (!is_null($this->meetCount[0])) return $count == $this->meetCount[0]; return false; }
 	protected function predicateDate($value){ return (bool) preg_match('/^(((\d{4})(-)(0[13578]|10|12)(-)(0[1-9]|[12][0-9]|3[01]))|((\d{4})(-)(0[469]|1??1)(-)([0][1-9]|[12][0-9]|30))|((\d{4})(-)(02)(-)(0[1-9]|1[0-9]|2[0-8]))|(([02468]??[048]00)(-)(02)(-)(29))|(([13579][26]00)(-)(02)(-)(29))|(([0-9][0-9][0][48])(-)(0??2)(-)(29))|(([0-9][0-9][2468][048])(-)(02)(-)(29))|(([0-9][0-9][13579][26])(-)(02??)(-)(29)))$/', $value); }
 	protected function predicateDatetime($value){ return (bool) preg_match('/^(((\d{4})(-)(0[13578]|10|12)(-)(0[1-9]|[12][0-9]|3[01]))|((\d{4})(-)(0[469]|1??1)(-)([0][1-9]|[12][0-9]|30))|((\d{4})(-)(02)(-)(0[1-9]|1[0-9]|2[0-8]))|(([02468]??[048]00)(-)(02)(-)(29))|(([13579][26]00)(-)(02)(-)(29))|(([0-9][0-9][0][48])(-)(0??2)(-)(29))|(([0-9][0-9][2468][048])(-)(02)(-)(29))|(([0-9][0-9][13579][26])(-)(02??)(-)(29)))(\s([0-1][0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9]))$/', $value); }
-	protected function predicateDecimal($value){ return (bool) filter_var($value, FILTER_VALIDATE_FLOAT); }
+	protected function predicateDecimal($value){ return filter_var($value, FILTER_VALIDATE_FLOAT) !== false; }
 	protected function predicateEarlier($value){ return strtotime($value) < $this->meetEarlier; }
-	protected function predicateEmail($value){ return (bool) filter_var($value, FILTER_VALIDATE_EMAIL); }
+	protected function predicateEmail($value){ return filter_var($value, FILTER_VALIDATE_EMAIL) !== false; }
 	protected function predicateEquals($value){ return $value == $this->meetEquals; }
 	protected function predicateFile($value){ return is_file($value); }
 	protected function predicateGreaterThan($value){ return $value > $this->meetGreaterThan; }
 	protected function predicateId($value){ return (bool) preg_match('/^[0-9]+$/', $value) && $value > 0;  }
 	protected function predicateIn($value){ return in_array($value, $this->meetIn); }
-	protected function predicateInteger($value){ return (bool) filter_var($value, FILTER_VALIDATE_INT); }
-	protected function predicateIp($value){ return (bool) filter_var($value, FILTER_VALIDATE_IP); }
+	protected function predicateInteger($value){ return filter_var($value, FILTER_VALIDATE_INT) !== false; }
+	protected function predicateIp($value){ return filter_var($value, FILTER_VALIDATE_IP) !== false; }
 	protected function predicateLater($value){ return strtotime($value) > $this->meetLater; }
 	protected function predicateLength($value){ $length = strlen($value); if (!is_null($this->meetLength[0]) && !is_null($this->meetLength[1])){ if ($this->meetLength[0] !== false && $this->meetLength[1] !== false) return ($length >= $this->meetLength[0] && $length <= $this->meetLength[1]); if ($this->meetLength[0] !== false) return $length >= $this->meetLength[0]; return $length <= $this->meetLength[1]; } else if (!is_null($this->meetLength[0])) return $length == $this->meetLength[0]; return false; }
 	protected function predicateLessThan($value){ return $value < $this->meetLessThan; }
@@ -368,7 +417,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected function predicateRow($value){ return (isset($value['id']) && preg_match('/^[0-9]+$/', $value['id']) && $value['id'] > 0); }
 	protected function predicateString($value){ return is_string($value); }
 	protected function predicateTime($value){ return (bool) preg_match('/^(([0-1][0-9]|2[0-4]):([0-5][0-9]):([0-5][0-9]))$/', $value);  }
-	protected function predicateURL($value){ return (bool) filter_var($value, FILTER_VALIDATE_URL); }
+	protected function predicateURL($value){ return filter_var($value, FILTER_VALIDATE_URL) !== false; }
 	protected function predicateWithData($value){ $data = $this->data(self::DATA_ORIGINAL); return !empty($data); }
 		
 	protected function scanAll($predicate){
@@ -432,6 +481,7 @@ class Contract_Term extends Contract_Term_Abstract {
 		if ($parent instanceof Contract || $parent instanceof Contract_Term) $this->parent = $parent;
 		
 	}
+
 	
 	public function __toString(){
 		
