@@ -34,6 +34,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected $meetEarlier = false;
 	protected $meetEmail = false;
 	protected $meetEquals = false;
+	protected $meetFile = false;
 	protected $meetGreaterThan = false;
 	protected $meetId = false;
 	protected $meetIn = false;
