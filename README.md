@@ -51,6 +51,7 @@ class MyClass {
 		$contract->term('arg')->alphaUnderscore(); /* The term must be an alphanumeric allowing unscores */
 		$contract->term('arg')->arraylist(); /* The term must be an array */
 		$contract->term('arg')->base64(); /* The term must be a base64 string */
+		$contract->term('arg')->between($value, $value2); /* The term must be between the range of the two values */
 		$contract->term('arg')->boolean(); /* The term must be a boolean */
 		$contract->term('arg')->count($value); /* The term must be the count of the value (for arrays) */
 		$contract->term('arg')->decimal(); /* The term must be a decimal */
