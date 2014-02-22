@@ -26,6 +26,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected $meetAlphaUnderscore = false;
 	protected $meetArraylist = false;
 	protected $meetBase64 = false;
+	protected $meetBetween = false;
 	protected $meetBoolean = false;
 	protected $meetCount = false;
 	protected $meetDate = false;
@@ -77,6 +78,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	public function alphaUnderscore(){ $this->meetAlphaUnderscore = true; return $this; }
 	public function arraylist($all = false){ $this->meetArraylist = ($all) ? 'all' : 'one'; return $this; }
 	public function base64(){ $this->meetBase64 = true; return $this; }
+	public function between($value, $value2){ $this->meetBetween = array($value, $value2); return $this; }
 	public function boolean($strict = true){ $this->meetBoolean = ($strict) ? 'strict' : 'loose'; return $this; }
 	public function count($value = null, $value2 = null){ $this->meetCount = (!is_null($value) || !is_null($value2)) ? array($value, $value2) : false; return $this; }
 	public function date(){ $this->meetDate = true; return $this; }
@@ -336,8 +338,9 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected function metAlphaDash(){ return $this->scanAll('AlphaDash'); }
 	protected function metAlphaUnderscore(){ return $this->scanAll('AlphaUnderscore'); }
 	protected function metArraylist(){ switch($this->meetArraylist){ case 'all': return $this->scanAll('Arraylist'); break; case 'one': return $this->scanOne('Arraylist'); break; } }
-	protected function metBoolean(){ return $this->scanAll('Boolean'); }
 	protected function metBase64(){ return $this->scanAll('Base64'); }
+	protected function metBetween(){ return $this->scanAll('Between'); }
+	protected function metBoolean(){ return $this->scanAll('Boolean'); }
 	protected function metCount(){ return $this->scanOne('Count'); }
 	protected function metDate(){ return $this->scanAll('Date'); }
 	protected function metDatetime(){ return $this->scanAll('Datetime'); }
@@ -386,6 +389,7 @@ class Contract_Term extends Contract_Term_Abstract {
 	protected function predicateAlphaUnderscore($value){ return (bool) preg_match('/[a-z0-9_]+/', $value); }
 	protected function predicateArraylist($value){ return is_array($value); }
 	protected function predicateBase64($value){ return (bool) !preg_match('/[^a-zA-Z0-9\/\+=]/', $value); }
+	protected function predicateBetween($value){ return $value >= $this->meetBetween[0] && $value <= $this->meetBetween[1]; }
 	protected function predicateBoolean($value){ return ($this->meetBoolean == 'strict') ? is_bool($value) : is_bool($value) || $value === 0 || $value === 1 || $value === '0' || $value === '1'; }
 	protected function predicateCount($value){ $count = count($value); if (!is_null($this->meetCount[0]) && !is_null($this->meetCount[1])){ if (is_numeric($this->meetCount[0]) && is_numeric($this->meetCount[1])) return ($count >= $this->meetCount[0] && $count <= $this->meetCount[1]); if (is_numeric($this->meetCount[0])) return $count >= $this->meetCount[0]; else return $count <= $this->meetCount[1]; } else if (!is_null($this->meetCount[0])) return $count == $this->meetCount[0]; return false; }
 	protected function predicateDate($value){ return (bool) preg_match('/^(((\d{4})(-)(0[13578]|10|12)(-)(0[1-9]|[12][0-9]|3[01]))|((\d{4})(-)(0[469]|1??1)(-)([0][1-9]|[12][0-9]|30))|((\d{4})(-)(02)(-)(0[1-9]|1[0-9]|2[0-8]))|(([02468]??[048]00)(-)(02)(-)(29))|(([13579][26]00)(-)(02)(-)(29))|(([0-9][0-9][0][48])(-)(0??2)(-)(29))|(([0-9][0-9][2468][048])(-)(02)(-)(29))|(([0-9][0-9][13579][26])(-)(02??)(-)(29)))$/', $value); }
