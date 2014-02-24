@@ -30,6 +30,7 @@ class Model {
 Documentation of PHP-Contract Functionality
 -------------------------------------------
 (For detailed usage examples, see https://github.com/axiom82/PHP-Contract/tree/master/Examples)
+(For complete information, see https://github.com/axiom82/PHP-Contract/wiki)
 
 
 <pre>
