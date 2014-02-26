@@ -32,6 +32,8 @@ class Contract {
 		
 		}
 		
+		return $this;
+		
 	}
 		
 	public function data($term){
