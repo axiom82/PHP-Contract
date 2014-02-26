@@ -134,6 +134,9 @@ class Contract_Term extends Contract_Term_Abstract {
 	
 	public function element($name){
 		
+		if (!in_array($name, $this->dataAllowable)) $this->dataAllowable[] = $name;
+		if (!isset($this->children[$name])) $this->children[$name] = new Site_Contract_Term($name, '', $this);
+		
 		return $this->getTerm($name);
 		
 	}
