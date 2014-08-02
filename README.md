@@ -47,6 +47,22 @@ class UserModel {
 }
 </pre>
 
+In PHP > 5.4, you can take advantage of this additional short coding for defining contract terms via array notation:
+-------------------------------------------------------------------------------------------------------------------
+
+<pre>
+<?php
+
+$contract = new Contract([
+    'number1' => 'integer',
+    'number2' => ['integer', 'between' => [1, 50]],
+    'number3' => ['optional', 'integer', 'lessThan' => 15]
+]);
+$contract->metOrThrow();
+
+?>
+</pre>
+
 
 Documentation of PHP-Contract Functionality
 -------------------------------------------
