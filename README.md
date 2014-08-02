@@ -31,6 +31,7 @@ Example of Array Notation for Defining Contract Terms
 
 <pre>
 class User {
+
 	public function getUser($userId, $userName){
 
 		$contract = new Contract(array(
@@ -42,6 +43,7 @@ class User {
 		/* Now, get the user ... */
 
 	}
+	
 }
 </pre>
 
