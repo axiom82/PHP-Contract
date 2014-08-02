@@ -30,7 +30,7 @@ Example of Array Notation for Defining Contract Terms
 -----------------------------------------------------------
 
 <pre>
-class User {
+class UserModel {
 
 	public function getUser($userId, $userName){
 
