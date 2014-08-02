@@ -73,6 +73,7 @@ class Contract {
 			if ($term instanceof Contract_Term_Abstract) $current = $term;
 			else {
 			
+				require_once('Contract/Exception.php');
 				throw new Contract_Exception('Could not find: ' . $termName);
 				
 			}
@@ -150,6 +151,7 @@ class Contract {
 				
 			if ($met['predicate'] != 'Allowed'){
 				
+				require_once('Contract/Exception.php');
 				throw new Contract_Exception('Contract term `' . $met['term'] . '` did not meet its requirement for ' . $met['predicate'] . '.', $met['name']);
 			
 			}
@@ -205,9 +207,10 @@ class Contract {
 											foreach ($elementConfig as $elementDefinitionName => $elementDefinitionValue){
 												
 												if (method_exists($element, $elementDefinitionName)){
-													
-													if (!is_array($elementDefinitionValue)) $elementDefinitionValue = array($elementDefinitionValue);
+																										
+													if (!is_array($elementDefinitionValue) || in_array($elementDefinitionName, array('allowed', 'alone', 'in'))) $elementDefinitionValue = array($elementDefinitionValue);
 													call_user_func_array(array($element, $elementDefinitionName), $elementDefinitionValue);
+
 													
 												}
 												else if (method_exists($element, $elementDefinitionValue)){
@@ -237,13 +240,14 @@ class Contract {
 							
 							case 'elements':
 							
+								require_once('Contract/Exception.php');
 								throw new Exception('Contract_Term::elements() is not supported when creating terms via array notation.');
 								
 							break;
 							
 							default:
 							
-								if (!is_array($definitionValue)) $definitionValue = array($definitionValue);
+								if (!is_array($definitionValue) || in_array($definitionName, array('allowed', 'alone', 'in'))) $definitionValue = array($definitionValue);
 								call_user_func_array(array($term, $definitionName), $definitionValue);
 							
 							break;
@@ -288,8 +292,5 @@ class Contract {
 	}
 	
 }
-
-?>
-
 
 ?>
