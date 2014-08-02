@@ -7,7 +7,7 @@ class Contract {
 	protected $reflection = array();
 	protected $terms = array();
 	
-	public function __construct(){
+	public function __construct(array $termsData = null){
 		
 		$trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
 		
@@ -32,10 +32,12 @@ class Contract {
 		
 		}
 		
+		if (!is_null($termsData)) $this->terms($termsData);
+		
 		return $this;
 		
 	}
-		
+	
 	public function data($term){
 		
 		return $this->getData($term);
@@ -71,7 +73,6 @@ class Contract {
 			if ($term instanceof Contract_Term_Abstract) $current = $term;
 			else {
 			
-				require_once('Contract/Exception.php');	
 				throw new Contract_Exception('Could not find: ' . $termName);
 				
 			}
@@ -149,7 +150,6 @@ class Contract {
 				
 			if ($met['predicate'] != 'Allowed'){
 				
-				require_once('Contract/Exception.php');
 				throw new Contract_Exception('Contract term `' . $met['term'] . '` did not meet its requirement for ' . $met['predicate'] . '.', $met['name']);
 			
 			}
@@ -167,6 +167,115 @@ class Contract {
 		
 	}
 	
+	public function terms(array $termsData){
+		
+		foreach ($termsData as $termName => $termConfig){
+			
+			$name = $termName;
+			$data = null;
+			$definition = $termConfig;
+			
+			if (is_array($termConfig)){
+				
+				if (array_key_exists('data', $termConfig)) $data = $termConfig['data'];
+				if (array_key_exists('definition', $termConfig)) $definition = $termConfig['definition'];
+			
+			}
+			
+			$term = $this->getTerm($name, true, $data);
+			
+			if (is_array($definition)){
+				
+				foreach ($definition as $definitionName => $definitionValue){
+					
+					if (method_exists($term, $definitionName)){
+						
+						switch ($definitionName){
+							
+							case 'element':
+							
+								if (is_array($definitionValue)){
+									
+									foreach ($definitionValue as $elementName => $elementConfig){
+										
+										$element = $term->element($elementName);
+										
+										if (is_array($elementConfig)){
+													 
+											foreach ($elementConfig as $elementDefinitionName => $elementDefinitionValue){
+												
+												if (method_exists($element, $elementDefinitionName)){
+													
+													if (!is_array($elementDefinitionValue)) $elementDefinitionValue = array($elementDefinitionValue);
+													call_user_func_array(array($element, $elementDefinitionName), $elementDefinitionValue);
+													
+												}
+												else if (method_exists($element, $elementDefinitionValue)){
+													
+													call_user_func_array(array($element, $elementDefinitionValue), array());
+													
+												}
+												
+											}
+													 
+										}
+										else {
+											
+											if (method_exists($element, $elementConfig)){
+												
+												call_user_func_array(array($element, $elementConfig), array());
+													
+											}
+											
+										}
+										
+									}
+									
+								}
+							
+							break;
+							
+							case 'elements':
+							
+								throw new Exception('Contract_Term::elements() is not supported when creating terms via array notation.');
+								
+							break;
+							
+							default:
+							
+								if (!is_array($definitionValue)) $definitionValue = array($definitionValue);
+								call_user_func_array(array($term, $definitionName), $definitionValue);
+							
+							break;
+							
+						}
+									  
+					}
+					else if (method_exists($term, $definitionValue)){
+						
+						call_user_func_array(array($term, $definitionValue), array());
+						
+					}
+					
+				}
+				
+			}
+			else {
+				
+				if (method_exists($term, $definition)){
+					
+					call_user_func_array(array($term, $definition), array());
+						
+				}
+				
+			}
+			
+		}
+		
+		return $this;
+		
+	}
+	
 	public function __toString(){
 		
 		$string = '[contract' . (!empty($this->name) ? ':' . $this->name : '') . "]\n";
@@ -179,5 +288,8 @@ class Contract {
 	}
 	
 }
+
+?>
+
 
 ?>
