@@ -26,6 +26,25 @@ class Model {
 }
 </pre>
 
+Example of Array Notation for Defining Contract Terms
+-----------------------------------------------------------
+
+<pre>
+class User {
+	public function getUser($userId, $userName){
+
+		$contract = new Contract(array(
+			'userId' => 'id',
+			'userName' => array('optional', 'alphaNumeric', 'length' => array(8,12))
+		));
+		$contract->metOrThrow();
+		
+		/* Now, get the user ... */
+
+	}
+}
+</pre>
+
 
 Documentation of PHP-Contract Functionality
 -------------------------------------------
