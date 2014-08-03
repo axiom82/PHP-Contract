@@ -47,16 +47,6 @@ class UserModel {
 }
 </pre>
 
-Checking The Contract During Initialization:
--------------------------------------------------------------------------------------------------------------------
-
-<pre>
-$contract = new Contract(array(
-    'userId'    => 'id',
-    'userData'  => array('arraylist', 'element' => array('name' => 'alpha', 'address' => 'required'))
-), Contract::MET_OR_THROW);
-</pre>
-
 In PHP > 5.4, you can take advantage of this additional short coding for defining contract terms via array notation:
 -------------------------------------------------------------------------------------------------------------------
 
@@ -67,6 +57,16 @@ $contract = new Contract([
     'number3' => ['optional', 'integer', 'lessThan' => 15]
 ]);
 $contract->metOrThrow();
+</pre>
+
+Checking The Contract During Initialization:
+-------------------------------------------------------------------------------------------------------------------
+
+<pre>
+$contract = new Contract(array(
+    'userId'    => 'id',
+    'userData'  => array('arraylist', 'element' => array('name' => 'alpha', 'address' => 'required'))
+), Contract::MET_OR_THROW);
 </pre>
 
 Documentation of PHP-Contract Functionality
