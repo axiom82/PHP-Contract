@@ -59,7 +59,7 @@ $contract = new Contract([
 $contract->metOrThrow();
 </pre>
 
-Checking The Contract During Initialization:
+Example of Checking The Contract During Initialization:
 -------------------------------------------------------------------------------------------------------------------
 
 <pre>
