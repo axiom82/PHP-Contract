@@ -1,17 +1,25 @@
 <?php
+require_once('Contract/Exception.php');
 require_once('Contract/Term.php');
 
 class Contract {
+	
+	const FROM_FACTORY = true;
+	const MET = 'met';
+	const MET_OR_THROW = 'metOrThrow';
 	
 	protected $name = '';
 	protected $reflection = array();
 	protected $terms = array();
 	
-	public function __construct(array $termsData = null){
+	public function __construct(array $termsData = null, $metAction = null, $fromFactory = null){
 		
 		$trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
+		$traceIndex = 1;
 		
-		$object = $trace[1];
+		if ($fromFactory === Contract::FROM_FACTORY) $traceIndex++;
+		
+		$object = $trace[$traceIndex];
 		unset($trace);
 		
 		if (isset($object)){
@@ -33,8 +41,12 @@ class Contract {
 		}
 		
 		if (!is_null($termsData)) $this->terms($termsData);
-		
-		return $this;
+		if (!is_null($metAction)) switch ($metAction){
+			
+			case self::MET_OR_THROW: $this->metOrThrow(); break;
+			default: $this->metOrThrow(); break;
+			
+		}
 		
 	}
 	
@@ -62,6 +74,13 @@ class Contract {
 		
 	}
 	
+	public static function factory(array $termsData = null, $metAction = null){
+		
+		$contract = new self($termsData, $metAction, Contract::FROM_FACTORY);
+		return $contract;
+		
+	}
+	
 	public function find($termName){
 		
 		$terms = explode('/', $termName);
@@ -73,7 +92,6 @@ class Contract {
 			if ($term instanceof Contract_Term_Abstract) $current = $term;
 			else {
 			
-				require_once('Contract/Exception.php');
 				throw new Contract_Exception('Could not find: ' . $termName);
 				
 			}
@@ -151,7 +169,6 @@ class Contract {
 				
 			if ($met['predicate'] != 'Allowed'){
 				
-				require_once('Contract/Exception.php');
 				throw new Contract_Exception('Contract term `' . $met['term'] . '` did not meet its requirement for ' . $met['predicate'] . '.', $met['name']);
 			
 			}
@@ -240,7 +257,6 @@ class Contract {
 							
 							case 'elements':
 							
-								require_once('Contract/Exception.php');
 								throw new Exception('Contract_Term::elements() is not supported when creating terms via array notation.');
 								
 							break;
